@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:meditator_app/pages/main_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,10 +12,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: "Meditate App Flutter",
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(title: Text("Main", style: TextStyle(fontSize: 20),),),
+      theme: ThemeData(
+        fontFamily: GoogleFonts.lato().fontFamily,
       ),
+      home: MainScreen(),
     );
   }
 }
