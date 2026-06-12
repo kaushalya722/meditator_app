@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:meditator_app/pages/main_screen.dart';
+import 'package:meditator_app/routers/router.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,13 +11,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: "Meditate App Flutter",
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: GoogleFonts.lato().fontFamily,
       ),
-      home: MainScreen(),
+      routerConfig: RouterClass().router,
     );
   }
 }
