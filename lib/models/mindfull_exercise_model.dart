@@ -4,7 +4,7 @@ class MindFulnessExercise{
     final String description;
     final List<String> instructions;
     final int duration;
-    final String instructionUrl;
+    final String instructionsUrl;
     final String imagePath;
 
   MindFulnessExercise({
@@ -13,7 +13,7 @@ class MindFulnessExercise{
     required this.description, 
     required this.instructions, 
     required this.duration, 
-    required this.instructionUrl, 
+    required this.instructionsUrl, 
     required this.imagePath
     });
 
@@ -25,7 +25,7 @@ class MindFulnessExercise{
         description: json['description'], 
         instructions: List<String>.from(json['instructions']), 
         duration: json['duration'], 
-        instructionUrl: json['instruction_url'], 
+        instructionsUrl: json['instruction_url'], 
         imagePath: json['image_path']
         );
     }
@@ -38,7 +38,7 @@ class MindFulnessExercise{
         'description' : description,
         'instructions' : instructions,
         'duration' : duration,
-        'instruction_url' : instructionUrl,
+        'instruction_url' : instructionsUrl,
         'image_path' : imagePath
       };
 
