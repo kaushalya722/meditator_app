@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
@@ -6,6 +8,7 @@ import 'package:meditator_app/models/meditation_exercise_model.dart';
 import 'package:meditator_app/models/mindfull_exercise_model.dart';
 import 'package:meditator_app/models/sleep_exercise_model.dart';
 import 'package:meditator_app/providers/filter_provider.dart';
+import 'package:meditator_app/routers/route_names.dart';
 import 'package:meditator_app/utils/colors.dart';
 import 'package:meditator_app/utils/text_style.dart';
 import 'package:provider/provider.dart';
@@ -14,8 +17,12 @@ class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   //handle mindfullness exercises pressed
-  void handleMindfullExercisePressed() {
-    print("Mindfull");
+  void handleMindfullExercisePressed(BuildContext context, MindFulnessExercise data) {
+    GoRouter.of(context).pushNamed(RoutesNames.mindfullExerciseTimer,
+    queryParameters: {
+      "mindfullExercise" : jsonEncode(data.toJson()),
+    }
+    );
   }
 
   //handle meditation exercises pressed
@@ -88,7 +95,7 @@ class HomePage extends StatelessWidget {
                               url: videoUrl
                               ),
                               );
-                              Navigator.pop(context);
+                              
 
                         }, 
                         child: Text("Start", style: TextStyle(
@@ -129,8 +136,13 @@ class HomePage extends StatelessWidget {
   }
 
   //handle mindfullness exercises pressed
-  void handleSleepExercisePressed() {
-    print("Sleep");
+  void handleSleepExercisePressed(BuildContext context, SleepExercise data) {
+    GoRouter.of(context).pushNamed(RoutesNames.sleepExerciseTimer,
+    queryParameters: {
+      "sleepExercise" : jsonEncode(data.toJson()),
+    }
+    );
+    
   }
 
   @override
@@ -287,7 +299,7 @@ class HomePage extends StatelessWidget {
                          return GestureDetector(
                           onTap: () {
                             if(data is MindFulnessExercise){
-                              handleMindfullExercisePressed();
+                              handleMindfullExercisePressed(context, data);
                             }else if(data is MeditationExercise){
                               handleMeditationExercisePressed(
                                 context, 
@@ -298,7 +310,7 @@ class HomePage extends StatelessWidget {
                                 data.videoUrl
                               );
                             }else{
-                              handleSleepExercisePressed();
+                              handleSleepExercisePressed(context, data);
                             }
                           },
                           child: Container(

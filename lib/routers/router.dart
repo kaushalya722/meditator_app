@@ -3,9 +3,12 @@ import 'dart:convert';
 import 'package:go_router/go_router.dart';
 import 'package:meditator_app/models/function_data_model.dart';
 import 'package:meditator_app/models/mindfull_exercise_model.dart';
+import 'package:meditator_app/models/sleep_exercise_model.dart';
 import 'package:meditator_app/pages/functions_page.dart';
 import 'package:meditator_app/pages/main_screen.dart';
+import 'package:meditator_app/pages/mindfull_exercise_timer.dart';
 import 'package:meditator_app/pages/single_mindfull_exercise.dart';
+import 'package:meditator_app/pages/sleep_exercise_timer.dart';
 import 'package:meditator_app/routers/route_names.dart';
 
 class RouterClass {
@@ -39,6 +42,27 @@ class RouterClass {
               final FunctionData functionData = state.extra as FunctionData;
               return FunctionsPage(functionData: functionData);
             },
-            )
+            ),
+            GoRoute(
+              path: "/mindfullExerciseTimer",
+              name: RoutesNames.mindfullExerciseTimer,
+              builder: (context, state) {
+                final mindfullExerciseJson = state.uri.queryParameters["mindfullExercise"];
+                final mindfulnessExercise = MindFulnessExercise.fromJson(jsonDecode(mindfullExerciseJson!),);
+                return MindfullExerciseTimer(
+                  mindfullExercise: mindfulnessExercise);
+              },
+              ),
+              GoRoute(
+              path: "/sleepExerciseTimer",
+              name: RoutesNames.sleepExerciseTimer,
+              builder: (context, state) {
+                final sleepExerciseJson = state.uri.queryParameters["sleepExercise"];
+                final SleepExercise sleepExercise = SleepExercise.fromJson(jsonDecode(sleepExerciseJson!));
+                   return SleepExerciseTimerPage(
+                    sleepExercise: sleepExercise,
+                    );
+              },
+              )
     ]);
 }
