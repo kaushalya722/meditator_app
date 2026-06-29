@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:meditator_app/models/sleep_exercise_model.dart';
+import 'package:meditator_app/providers/custom_data_provider.dart';
 import 'package:meditator_app/utils/colors.dart';
 import 'package:meditator_app/widgets/reusable/text_input.dart';
+import 'package:provider/provider.dart';
 
 class SleepExerciseForm extends StatefulWidget {
   const SleepExerciseForm({super.key});
@@ -118,7 +121,28 @@ String _audioUrl = "";
                    children: [
                      ElevatedButton(
                       //todo: onpressed
-                      onPressed: () {}, 
+                      onPressed: () {
+                        if(_formKey.currentState!.validate()){
+                          _formKey.currentState!.save();
+
+                          final sleepExercise = SleepExercise(
+                            category: _category, 
+                            name: _name, 
+                            description: _description, 
+                            duration: _duration, 
+                            audioUrl: _audioUrl);
+
+                            //clear fields
+                            _formKey.currentState!.reset();
+                            _category = "";
+                            _name = "";
+                            _description = "";
+                            _duration = 0;
+                            _audioUrl = "";
+
+                            Provider.of<CustomDataProvider>(context, listen: false).addSleepExercise(sleepExercise, context);
+                        }
+                      }, 
                       style: ButtonStyle(
                         backgroundColor:WidgetStateProperty.all<Color>(
                           AppColors.primaryGreen,

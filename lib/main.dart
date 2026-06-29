@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:meditator_app/models/meditation_exercise_model.dart';
+import 'package:meditator_app/models/mindfull_exercise_model.dart';
+import 'package:meditator_app/models/sleep_exercise_model.dart';
+import 'package:meditator_app/providers/custom_data_provider.dart';
 import 'package:meditator_app/providers/filter_provider.dart';
 import 'package:meditator_app/providers/meditation_provider.dart';
 import 'package:meditator_app/providers/mindfull_exercise_provider.dart';
@@ -7,8 +13,19 @@ import 'package:meditator_app/providers/sleep_exercise_provider.dart';
 import 'package:meditator_app/routers/router.dart';
 import 'package:provider/provider.dart';
 
-void main() {
-  runApp(MultiProvider(
+void main() async{
+  await Hive.initFlutter();
+  Hive.registerAdapter(MeditationExerciseAdapter());
+  Hive.registerAdapter(MindFulnessExerciseAdapter());
+  Hive.registerAdapter(SleepExerciseAdapter());
+
+  await Hive.openBox("meditation_data");
+  await Hive.openBox("mindfulness_data");
+  await Hive.openBox("sleep_data");
+
+
+  runApp(
+    MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => MindfullExerciseProvider(),
       ),
@@ -17,6 +34,8 @@ void main() {
       ChangeNotifierProvider(create: (context) => SleepExerciseProvider(),
       ),
       ChangeNotifierProvider(create: (context) => FilterProvider(),
+      ),
+      ChangeNotifierProvider(create: (context) => CustomDataProvider(),
       ),
     ],
     child: MyApp(),

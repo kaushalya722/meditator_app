@@ -2,8 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:meditator_app/models/mindfull_exercise_model.dart';
+import 'package:meditator_app/providers/custom_data_provider.dart';
 import 'package:meditator_app/utils/colors.dart';
 import 'package:meditator_app/widgets/reusable/text_input.dart';
+import 'package:provider/provider.dart';
 
 class MindfullExerciseForm extends StatefulWidget {
   const MindfullExerciseForm({super.key});
@@ -53,6 +56,7 @@ Future<void> _pickImage(ImageSource source) async {
               ),
                const SizedBox(height: 30,),
               Form(
+                key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -169,7 +173,35 @@ Future<void> _pickImage(ImageSource source) async {
                    children: [
                      ElevatedButton(
                       //todo: onpressed
-                      onPressed: () {},
+                      onPressed: () {
+                        if(_formKey.currentState!.validate()){
+                          _formKey.currentState!.save();
+
+                          final imagePathString = _imagePath?.path ?? "";
+
+                          final mindfulExercise = MindFulnessExercise(
+                            category: _category, 
+                            name: _name, 
+                            description: _description, 
+                            instructions: _instructions, 
+                            duration: _duration, 
+                            instructionsUrl: _instructionsUrl, 
+                            imagePath: imagePathString);
+
+                            //clear feilds
+                            _formKey.currentState!.reset();
+                            _category = "";
+                            _name = "";
+                            _description = "";
+                            _instructions = [];
+                            _duration = 0;
+                            _instructionsUrl = "";
+                            _imagePath = null;
+
+                            Provider.of<CustomDataProvider>(context, listen: false).addNewMindfulExercise(mindfulExercise, context);
+
+                        }
+                      },
                       style: ButtonStyle(
                         backgroundColor:WidgetStateProperty.all<Color>(
                           AppColors.primaryGreen,
